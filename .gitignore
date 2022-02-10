@@ -71,6 +71,11 @@ Thumbs.db
 *.dll
 *.exe
 
-# DoxyFile
+#Old Files
+*.old
+*.bak
+
+# Other
 Doxyfile
 TODOLIST.txt
+CMakeLists.txt.user
