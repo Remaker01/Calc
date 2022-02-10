@@ -1,15 +1,17 @@
 #include <include/Bigint.h>
 #include <stack>
+#include <cctype>
 #ifndef NDEBUG
 #include <cassert>
 #endif
-inline static bool isDigit(char ch) {return ch >= '0'&&ch <= '9'; }
+
 inline static int getPriority(char ch) {
     return (ch == '+' || ch == '-') ? 1 : 2;
 }
-inline static bool isOpt(char ch) {return ch == '+'||ch == '-'||ch == '*'||ch == '/'; }
+//Do not inline this function!
+bool isOpt(char ch) {return ch == '+'||ch == '-'||ch == '*'||ch == '/'; }
 
-Biginteger calc(const Biginteger &num1,const Biginteger &num2,char opt) {
+inline static Biginteger calc(const Biginteger &num1,const Biginteger &num2,char opt) {
     switch (opt) {
         case '+':
             return num1.Add(num2);
@@ -42,7 +44,7 @@ string toSuffixExp(const string &exp) {
         }
         char now = exp[i];
         if (i == len)    break;
-        if (!isDigit(now)) {
+        if (!isdigit(now)) {
             if (!isOpt(now)|| i == len - 1)
                 throw NumberFormatException(now);
             else if (isOpt(exp[i + 1]))
@@ -118,6 +120,7 @@ Biginteger calcSufExpression(const string &suffixExp, char term = 0) {
         number.push(now);
         i += j;
     }
+
 #ifndef NDEBUG
     assert(number.size() == 1);
 #endif
