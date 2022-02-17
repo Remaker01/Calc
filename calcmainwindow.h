@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include <QFile>
 #include <QDesktopServices>
+#include <QEvent>
+#include <QKeyEvent>
 #include <include/Bigint.h>
 namespace Ui {class MainWindow;}
 /**
@@ -19,6 +21,8 @@ private:
     bool autoCalculate;
     void registerSlots();
     void appendOpt(const QString &s);
+protected:
+    void keyPressEvent(QKeyEvent *event);
 public:
     explicit CalcMainWindow(QWidget *parent = nullptr);
     ~CalcMainWindow();
@@ -39,13 +43,13 @@ private slots:
     void on_pushButton6_clicked();
     void on_pushButton7_clicked();
     void on_pushButton8_clicked();
-    void on_pushButton_9_clicked();
+    void on_pushButton9_clicked();
     void on_pushButton0_clicked();
 
     void on_plusButton_clicked();
     void on_minusButton_clicked();
     void on_mulButton_clicked();
-    void on_pushButton_clicked();
+    void on_divButton_clicked();
     void on_clearButton_clicked();
 
 public slots:

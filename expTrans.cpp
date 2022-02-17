@@ -20,8 +20,10 @@ inline static Biginteger calc(const Biginteger &num1,const Biginteger &num2,char
         case '*':
             return num1.Multiply(num2);
         case '/':
-            return num1.Divide(num2);
+            Biginteger num3 = (num1 >= "0") ? num1.Add(num2.Divide("2")) : num1.Subt(num2.Divide("2"));
+            return num3.Divide(num2);
     }
+    throw NumberFormatException(opt);
 }
 /**
  * 将给定的中缀表达式转为后缀表达式
@@ -120,10 +122,8 @@ Biginteger calcSufExpression(const string &suffixExp, char term = 0) {
         number.push(now);
         i += j;
     }
-
-#ifndef NDEBUG
-    assert(number.size() == 1);
-#endif
+    if(number.size() > 1)
+        throw NumberFormatException();
     return number.top();
 }
 /**
