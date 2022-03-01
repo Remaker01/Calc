@@ -1,13 +1,8 @@
 #include <include/Bigint.h>
 #include <stack>
 #include <cctype>
-#ifndef NDEBUG
-#include <cassert>
-#endif
 
-inline static int getPriority(char ch) {
-    return (ch == '+' || ch == '-') ? 1 : 2;
-}
+inline static int getPriority(char ch) {return (ch == '+' || ch == '-') ? 1 : 2;}
 //Do not inline this function!
 bool isOpt(char ch) {return ch == '+'||ch == '-'||ch == '*'||ch == '/'; }
 
@@ -20,7 +15,8 @@ inline static Biginteger calc(const Biginteger &num1,const Biginteger &num2,char
         case '*':
             return num1.Multiply(num2);
         case '/':
-            Biginteger num3 = (num1 >= "0") ? num1.Add(num2.Divide("2")) : num1.Subt(num2.Divide("2"));
+            Biginteger half(num2.Divide("2"));
+            Biginteger num3 = (num1 >= "0") ? num1.Add(half) : num1.Subt(half);
             return num3.Divide(num2);
     }
     throw NumberFormatException(opt);

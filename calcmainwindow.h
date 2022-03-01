@@ -2,11 +2,10 @@
 #define CALCMAINWINDOW_H
 #include "./ui_mainwindow.h"
 #include <QMainWindow>
-#include <QPushButton>
 #include <QFile>
 #include <QDesktopServices>
-#include <QEvent>
 #include <QKeyEvent>
+#include <QPalette>
 #include <include/Bigint.h>
 namespace Ui {class MainWindow;}
 /**

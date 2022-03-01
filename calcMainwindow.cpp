@@ -16,6 +16,11 @@ CalcMainWindow::CalcMainWindow(QWidget *parent): QMainWindow(parent),
     ui->setupUi(this);
     ui->autoCalcBox->setTristate(false);
     ui->expEdit->setMaxLength(1<<15);
+    QPalette pl;
+    QPixmap back(":/icons/images/background.jpg");
+    pl.setBrush(backgroundRole(),QBrush(back));
+    setPalette(pl);
+    setAutoFillBackground(true);
     registerSlots();
 }
 
@@ -28,7 +33,7 @@ inline void CalcMainWindow::registerSlots() {
                                    "界面框架:Qt5.12\n"
                                    "环境:QT Creator5+CMake3.21+MinGW8.1\n"
                                    "作者邮箱:latexreal@163.com\n"
-                                   "版本号:1.0  1.0.220214");
+                                   "版本号:1.2  1.2.220228");
         info.addButton("确定",QMessageBox::AcceptRole);
         QPushButton *gitButton = info.addButton("访问项目GitHub",QMessageBox::ActionRole);
         connect(gitButton,&QPushButton::clicked,this,&CalcMainWindow::toGithub);
@@ -80,8 +85,8 @@ void CalcMainWindow::on_calcButton_clicked() {
         }
     } catch (NumberFormatException &e) {
         ui->resTextEdit->document()->setPlainText("算式中含有非法字符");
-    } catch (std::exception &e) {
-        ui->resTextEdit->document()->setPlainText(e.what());
+    } catch (DivByZeroException &e) {
+        ui->resTextEdit->document()->setPlainText("除数为0");
     }
 }
 
@@ -107,8 +112,7 @@ void CalcMainWindow::on_exitButton_clicked() {
 void CalcMainWindow::on_copyButton_clicked() {
     QString source = ui->resTextEdit->toPlainText();
     if(source.length() > 0&&source[0].isDigit()) {
-        QClipboard *board = QApplication::clipboard();
-        board->setText(source);
+        QApplication::clipboard()->setText(source);
         QMessageBox::information(this,"信息","已复制");
     }
     else    QMessageBox::warning(this,"信息","复制失败");

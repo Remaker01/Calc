@@ -24,6 +24,7 @@ set(PROJECT_SOURCES
         calcmainwindow.cpp
         calcmainwindow.h
         mainwindow.ui
+        backg.qrc
         app.rc
         qm.qrc
         ${TS_FILES}

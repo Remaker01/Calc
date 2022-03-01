@@ -59,7 +59,7 @@ class Biginteger {
         }
     }
     /*处理加法剩下的位数。a为位数较多的数*/
-    inline void addLefts(const Biginteger &a, int8_t carry, int minlen) {
+    inline void addLefts(const Biginteger &a, int8_t &carry, int minlen) {
         for(int i = minlen; i < a.eff_len; i++) {
             int now = a.data[i] + carry;
             data[eff_len++] = now % MOD_BASE;
@@ -152,7 +152,7 @@ class Biginteger {
     Biginteger classicMul(const Biginteger &a) const {
     	int aLen = a.eff_len;
         Biginteger ret(eff_len + aLen);  //存放结果
-        
+
 		ret.eff_len = eff_len + aLen - 1;
         for(int i = 0; i < eff_len; i++) {  //this
             int carry = 0;
@@ -171,7 +171,7 @@ class Biginteger {
     //Karatsuba乘法
     Biginteger Karatsuba(const Biginteger &a) const {
         int half = (std::max(eff_len,a.eff_len) + 1) / 2;
-        Biginteger xh = getUpper(eff_len - half),xl = getLower(half);  //第一个因数 
+        Biginteger xh = getUpper(eff_len - half),xl = getLower(half);  //第一个因数
         Biginteger yh = a.getUpper(a.eff_len - half),yl = a.getLower(half); //第二个因数
         //pl=xl * yl  ph=xh * yh
         Biginteger pl = xl.Multiply(yl);
@@ -179,6 +179,21 @@ class Biginteger {
 		//res= pl + ph * MOD_BASE^(half * 2) + ((xl + xh)(yl + yh) - pl - ph) * MOD_BASE(half)
         return pl + ph.addZero(half * 2) + ((xl + xh).Multiply(yl + yh) - pl - ph).addZero(half);
     }
+    Biginteger divByTwo() const {
+       Biginteger ret(*this);
+       bool carry = 0; //进位指示器
+       for(int i = eff_len - 1; i >= 0; i--) {
+           int now = data[i] >> 1;
+           if(carry) {
+               now = (now + (MOD_BASE / 2)) % MOD_BASE;
+           }
+           ret.data[i] = now;
+           carry = data[i] & 1;
+       }
+       ret.removeZero();
+       return ret;
+   }
+   friend class Bigdecimal;
   public:
     /**
      * Construct an empty big integer with the length of 0.
@@ -431,6 +446,11 @@ class Biginteger {
         Biginteger divided(absolute()),divisor(a.absolute());
         //被除数更小
         if(divisor > divided)      return Biginteger("0");
+        if(divisor == Biginteger("1"))    return (sign == a.sign) ? *this : Negate();
+        if(divisor == Biginteger("2")) {
+            Biginteger ret = divided.divByTwo();
+            return (sign == a.sign) ? ret : ret.Negate();
+        }
         int highest = divisor.data[divisor.eff_len - 1];
         int d = MOD_BASE / (highest + 1);
         //调整除数，下面使用Knuth除法
