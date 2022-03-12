@@ -82,22 +82,21 @@ string toSuffixExp(const string &exp) {
 /**
  * 后缀表达式求值
  * @param suffixExp :后缀表达式
- * @param term 终止符，默认为'\\0'
  * @return 后缀表达式 suffixExp 的结果
  */
-Biginteger calcSufExpression(const string &suffixExp, char term = 0) {
+Biginteger calcSufExpression(const string &suffixExp) {
     std::stack<Biginteger> number; //操作数栈
-    int i = 0;
+    int i = 0,len = suffixExp.length();
     if(suffixExp[0] == '-') {
         int j = 1;
-        while (suffixExp[i + j] != term && isdigit(suffixExp[i + j]))
+        while (i + j < len && isdigit(suffixExp[i + j]))
             j++;
         Biginteger now(suffixExp.substr(i, j));
         number.push(now);
         i += j;
     }
     while (true) {
-        while (isblank(suffixExp[i])&&suffixExp[i] != term) {
+        while (isblank(suffixExp[i])&&i < len) {
             i++;
         }
         if (isOpt(suffixExp[i])) {
@@ -110,9 +109,9 @@ Biginteger calcSufExpression(const string &suffixExp, char term = 0) {
             i++;
             continue;
         }
-        if (suffixExp[i] == term)   break;
+        if (i >= len)   break;
         int j = 0;
-        while (suffixExp[i + j] != term && isdigit(suffixExp[i + j]))
+        while (i + j < len && isdigit(suffixExp[i + j]))
             j++;
         Biginteger now(suffixExp.substr(i, j));
         number.push(now);

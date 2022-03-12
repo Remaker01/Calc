@@ -33,7 +33,7 @@ inline void CalcMainWindow::registerSlots() {
                                    "界面框架:Qt5.12\n"
                                    "环境:QT Creator5+CMake3.21+MinGW8.1\n"
                                    "作者邮箱:latexreal@163.com\n"
-                                   "版本号:1.2  1.2.220228");
+                                   "版本号:1.3  1.3.220312");
         info.addButton("确定",QMessageBox::AcceptRole);
         QPushButton *gitButton = info.addButton("访问项目GitHub",QMessageBox::ActionRole);
         connect(gitButton,&QPushButton::clicked,this,&CalcMainWindow::toGithub);
