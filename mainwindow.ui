@@ -491,11 +491,6 @@
     <string>F1</string>
    </property>
   </action>
-  <action name="actioninitSize">
-   <property name="text">
-    <string>恢复初始大小</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>

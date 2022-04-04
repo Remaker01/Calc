@@ -175,10 +175,5 @@
         <source>关于</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="mainwindow.ui" line="496"/>
-        <source>恢复初始大小</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 </TS>
